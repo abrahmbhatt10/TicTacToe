@@ -52,10 +52,38 @@ public class Square {
         return this.marker.equals(TicTacToe.BLANK);
     }
 
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
+    }
+
+    public void setWinningSquare(boolean winningSquare) {
+        isWinningSquare = winningSquare;
+    }
+
     /**
      * @return the marker for the square
      */
+
+
+
     public String toString() {
         return this.marker;
+    }
+
+
+    public boolean getIsWinningSquare() {
+        return isWinningSquare;
     }
 }
