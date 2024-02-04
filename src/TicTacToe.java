@@ -26,14 +26,16 @@ public class TicTacToe
     public static final int DIAGONAL_LEFT_WIN = 4;
 
     /** Winning Stats **/
-    private String winner;      // Provides the marker of the winner
+    public String winner;      // Provides the marker of the winner
     private int winDirection;   // Provides the direction of the win
                                 // following the win direction final variables above
     private int winIndex;       // Provides the index of the row/col of the win
-    private int turn;
+    public int turn;
 
     private Square[][] board;
-    private boolean isGameOver;
+    public boolean isGameOver;
+
+    private TicTacToeViewer TTTWindow;
 
     /**
      * Constructor which initialized the board with BLANKs.
@@ -42,13 +44,25 @@ public class TicTacToe
      * The view is initialized with this TicTacToe object
      */
     public TicTacToe() {
+
         // Initialize Squares in the board
         this.board = new Square[3][3];
+        //Initialize viewer
+        TTTWindow = new TicTacToeViewer(this);
+        int sLength = TTTWindow.getSquareLength();
         for(int row = 0; row < this.board.length; row++) {
             for(int col = 0; col< this.board[row].length; col++) {
                 this.board[row][col] = new Square(row, col);
+                this.board[row][col].setLength(sLength);
+                this.board[row][col].xMarkerImage = this.TTTWindow.scaledImageX;
+                this.board[row][col].oMarkerImage = this.TTTWindow.scaledImageO;
+                this.board[row][col].setxOffset(this.TTTWindow.getX_OFFSET());
+                this.board[row][col].setyOffset(this.TTTWindow.getY_OFFSET());
             }
         }
+
+
+
 
         // Initialize winning stats variables
         this.isGameOver = false;
@@ -79,7 +93,7 @@ public class TicTacToe
      * Gets the direction and index of the win
      * and marks the winning squares
      */
-    private void markWinningSquares() {
+    public void markWinningSquares() {
         for(int i=0; i<3; i++) {
             switch (this.winDirection) {
                 case TicTacToe.ROW_WIN:
@@ -126,19 +140,18 @@ public class TicTacToe
 
         // Determine if there was a winner
         if(!this.checkWin()) {
-            System.out.println("Game ends in a tie!");
+            System.out.println(" Game ends in a tie!");
         } else {
             this.markWinningSquares();
             if (this.turn%2 == 0) {
                 this.winner = O_MARKER;
-                System.out.println("O Wins!");
+                System.out.println("   O Wins!");
             } else {
                 this.winner = X_MARKER;
-                System.out.println("X Wins!");
+                System.out.println("   X Wins!");
             }
         }
     }
-
 
     /******************** Do NOT Modify Code Below this Line ********************/
     /**
@@ -174,7 +187,7 @@ public class TicTacToe
      * Check if there's a win on the board
      * @return True if there's a win and False otherwise
      */
-    private boolean checkWin() {
+    public boolean checkWin() {
         int rowIndex = checkRow();
         int colIndex = checkCol();
         int diag = checkDiag();
@@ -280,6 +293,9 @@ public class TicTacToe
             row++;
             System.out.println();
         }
+        TTTWindow.invalidate();
+        TTTWindow.validate();
+        TTTWindow.repaint();
     }
 
     public static void main(String[] args) {

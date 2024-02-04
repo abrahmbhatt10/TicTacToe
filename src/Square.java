@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /**
  * A class written to support the TicTacToe Game.
  *
@@ -16,6 +18,39 @@ public class Square {
     private int row;
     private int col;
     private boolean isWinningSquare;
+    private int length;
+    private int xOffset;
+    private int yOffset;
+    public Image xMarkerImage;
+    public Image oMarkerImage;
+
+    public boolean isWinningSquare() {
+        return isWinningSquare;
+    }
+
+    public int getxOffset() {
+        return xOffset;
+    }
+
+    public void setxOffset(int xOffset) {
+        this.xOffset = xOffset;
+    }
+
+    public int getyOffset() {
+        return yOffset;
+    }
+
+    public void setyOffset(int yOffset) {
+        this.yOffset = yOffset;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
 
     /**
      * Constructor to initialize one Square of the
@@ -29,6 +64,8 @@ public class Square {
 
         this.marker = TicTacToe.BLANK;
         this.isWinningSquare = false;
+
+
     }
 
     /******************** Getters and Setters ********************/
@@ -86,4 +123,30 @@ public class Square {
     public boolean getIsWinningSquare() {
         return isWinningSquare;
     }
+
+    public void draw(Graphics g)
+    {
+        //fills in the rectangle with 4 lines
+        g.drawRect(xOffset+col*length, yOffset+row*length, length, length);
+
+        //fills rectangle in green if won
+        if(getIsWinningSquare())
+        {   g.setColor(Color.GREEN);
+            g.fillRect(xOffset+col*length, yOffset+row*length, length, length);
+        }
+
+        if(marker.equals("X"))
+        {
+            g.drawRect( xOffset+col*length,yOffset+row*length, length, length);
+            g.drawImage(xMarkerImage,  xOffset + col * length, yOffset + row * length,null);
+        }
+        if(marker.equals("O"))
+        {
+            g.drawRect( xOffset+col*length, yOffset+row*length, length, length);
+            g.drawImage(oMarkerImage,  xOffset + col * length, yOffset + row * length,null);
+        }
+    }
+
 }
+
+
