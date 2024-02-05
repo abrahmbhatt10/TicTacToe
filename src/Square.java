@@ -18,38 +18,17 @@ public class Square {
     private int row;
     private int col;
     private boolean isWinningSquare;
-    private int length;
-    private int xOffset;
-    private int yOffset;
-    public Image xMarkerImage;
-    public Image oMarkerImage;
-
+    private TicTacToe backEnd;
     public boolean isWinningSquare() {
         return isWinningSquare;
     }
 
-    public int getxOffset() {
-        return xOffset;
+    public TicTacToe getBackEnd() {
+        return backEnd;
     }
 
-    public void setxOffset(int xOffset) {
-        this.xOffset = xOffset;
-    }
-
-    public int getyOffset() {
-        return yOffset;
-    }
-
-    public void setyOffset(int yOffset) {
-        this.yOffset = yOffset;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
+    public void setBackEnd(TicTacToe backEnd) {
+        this.backEnd = backEnd;
     }
 
     /**
@@ -64,8 +43,6 @@ public class Square {
 
         this.marker = TicTacToe.BLANK;
         this.isWinningSquare = false;
-
-
     }
 
     /******************** Getters and Setters ********************/
@@ -127,7 +104,11 @@ public class Square {
     public void draw(Graphics g)
     {
         //fills in the rectangle with 4 lines
-        g.drawRect(xOffset+col*length, yOffset+row*length, length, length);
+        int xOffset = backEnd.getxOffset();
+        int yOffset = backEnd.getyOffset();
+        int length = backEnd.getsLength();
+
+        g.drawRect(xOffset+col*length, yOffset+ row*length, length, length);
 
         //fills rectangle in green if won
         if(getIsWinningSquare())
@@ -135,15 +116,15 @@ public class Square {
             g.fillRect(xOffset+col*length, yOffset+row*length, length, length);
         }
 
-        if(marker.equals("X"))
+        if(marker.equals(backEnd.X_MARKER))
         {
             g.drawRect( xOffset+col*length,yOffset+row*length, length, length);
-            g.drawImage(xMarkerImage,  xOffset + col * length, yOffset + row * length,null);
+            g.drawImage(backEnd.getxMarkerImage(), xOffset + col * length, yOffset + row * length,null);
         }
-        if(marker.equals("O"))
+        if(marker.equals(backEnd.O_MARKER))
         {
             g.drawRect( xOffset+col*length, yOffset+row*length, length, length);
-            g.drawImage(oMarkerImage,  xOffset + col * length, yOffset + row * length,null);
+            g.drawImage(backEnd.getoMarkerImage(),  xOffset + col * length, yOffset + row * length,null);
         }
     }
 

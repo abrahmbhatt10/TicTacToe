@@ -10,6 +10,7 @@
  * @version: Jan 2023
  */
 
+import java.awt.*;
 import java.util.Scanner;
 
 public class TicTacToe
@@ -30,13 +31,16 @@ public class TicTacToe
     private int winDirection;   // Provides the direction of the win
                                 // following the win direction final variables above
     private int winIndex;       // Provides the index of the row/col of the win
-    public int turn;
+    private int turn;
 
     private Square[][] board;
-    public boolean isGameOver;
+    private boolean isGameOver;
 
-    private TicTacToeViewer TTTWindow;
+    private TicTacToeViewer TTTWindow;  //window created using TicTacToeViewer extends JFrame
+    private int sLength; //length of each square
 
+    private Image xMarkerImage, oMarkerImage; //Image file pointers for X and 0 markers
+    private int xOffset, yOffset; //window offsets for x and y coordinates
     /**
      * Constructor which initialized the board with BLANKs.
      * The winner is also initialized to BLANK.
@@ -49,20 +53,20 @@ public class TicTacToe
         this.board = new Square[3][3];
         //Initialize viewer
         TTTWindow = new TicTacToeViewer(this);
-        int sLength = TTTWindow.getSquareLength();
+        //Initialize square length
+        sLength = TTTWindow.getSquareLength();
+        //Initialize the board with the new Square objects
         for(int row = 0; row < this.board.length; row++) {
             for(int col = 0; col< this.board[row].length; col++) {
                 this.board[row][col] = new Square(row, col);
-                this.board[row][col].setLength(sLength);
-                this.board[row][col].xMarkerImage = this.TTTWindow.scaledImageX;
-                this.board[row][col].oMarkerImage = this.TTTWindow.scaledImageO;
-                this.board[row][col].setxOffset(this.TTTWindow.getX_OFFSET());
-                this.board[row][col].setyOffset(this.TTTWindow.getY_OFFSET());
+                this.board[row][col].setBackEnd(this);
             }
         }
-
-
-
+        //Initialize the variables that stay same for all squares
+        xMarkerImage = this.TTTWindow.scaledImageX;
+        oMarkerImage = this.TTTWindow.scaledImageO;
+        xOffset = this.TTTWindow.getX_OFFSET();
+        yOffset = this.TTTWindow.getY_OFFSET();
 
         // Initialize winning stats variables
         this.isGameOver = false;
@@ -71,6 +75,44 @@ public class TicTacToe
         this.winIndex = -1;
         this.winDirection = -1;
     }
+
+    public int getWinDirection() {
+        return winDirection;
+    }
+
+    public int getWinIndex() {
+        return winIndex;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public TicTacToeViewer getTTTWindow() {
+        return TTTWindow;
+    }
+
+    public Image getxMarkerImage() {
+        return xMarkerImage;
+    }
+
+    public Image getoMarkerImage() {
+        return oMarkerImage;
+    }
+
+    public int getxOffset() {
+        return xOffset;
+    }
+
+    public int getyOffset() {
+        return yOffset;
+    }
+
+    public int getsLength() {
+        return sLength;
+    }
+
+
 
     /******************** Methods You May Find Helpful ********************/
     public Square[][] getBoard() {
@@ -149,6 +191,28 @@ public class TicTacToe
             } else {
                 this.winner = X_MARKER;
                 System.out.println("   X Wins!");
+            }
+        }
+    }
+
+    public boolean isGameOver() {
+        return isGameOver;
+    }
+
+    // Returns the string to TTTWindow viewer to display the string at the bottom
+    // executed when Game is Over
+    public String getGameOverStatus(){
+        if(!this.isGameOver)
+        {
+            return "";
+        }
+        if(!this.checkWin()) {
+            return " Game ends in a tie!";
+        } else {
+            if (this.turn%2 == 0) {
+                return "   O Wins!";
+            } else {
+                return "   X Wins!";
             }
         }
     }
